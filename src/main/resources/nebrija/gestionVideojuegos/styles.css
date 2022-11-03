@@ -1,0 +1,6 @@
+.table-view .cell{ /* modificación de la tabla los parámetros de cada celda*/
+-fx-alignment: center;
+-fx-wrap-text: true;
+-fx-text-alignment: center;
+-fx-cell-size: 25px;
+}

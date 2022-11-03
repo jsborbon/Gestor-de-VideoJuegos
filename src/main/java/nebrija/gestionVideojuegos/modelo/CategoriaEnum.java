@@ -1,0 +1,5 @@
+package nebrija.gestionVideojuegos.modelo;
+
+public enum CategoriaEnum {  //FUNCIONAL EN CASO DE NO EXISTENCIA DE BD
+    SHOOTER, ROL, PLATAFORMAS, LUCHA, DEPORTES, ESTRATEGIA, SIMULACION, AVENTURA, ARCADE, CASUAL, INFANTIL, OTRO
+}

@@ -20,8 +20,8 @@ public class BDNoSQL<E> {
     private static DB database = null;
 
     public BDNoSQL() throws UnknownHostException {
-            mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
-            database = mongoClient.getDB("gestionVideojuegos");
+        mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
+        database = mongoClient.getDB("gestionVideojuegos");
 
     }
 
@@ -58,18 +58,18 @@ public class BDNoSQL<E> {
         DBCollection collection = database.getCollection(databaseName);
         DBCursor cursor = collection.find();
         while (cursor.hasNext()) {
-           DBObject objeto = cursor.next();
+            DBObject objeto = cursor.next();
             if (databaseName.equals("juego")) {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 LocalDate localDate = LocalDate.parse(objeto.get("fecha").toString(), formatter);
                 String[] plataformas = (objeto.get("plataforma").toString()).replaceAll("\\[|\\]|\"", "").split(", ");
                 String[] requisitos = (objeto.get("requisitos").toString()).replaceAll("\\[|\\]|\"", "").split(", ");
-                result.add((E) new Juego(Integer.parseInt(objeto.get("id").toString()),objeto.get("nombre").toString(), objeto.get("categoria").toString(), objeto.get("compania").toString(), (new ArrayList(Arrays.asList(plataformas))), localDate, (new ArrayList(Arrays.asList(requisitos))), objeto.get("comentario").toString(),objeto.get("imagen").toString()));
+                result.add((E) new Juego(Integer.parseInt(objeto.get("id").toString()), objeto.get("nombre").toString(), objeto.get("categoria").toString(), objeto.get("compania").toString(), (new ArrayList(Arrays.asList(plataformas))), localDate, (new ArrayList(Arrays.asList(requisitos))), objeto.get("comentario").toString(), objeto.get("imagen").toString()));
             } else if (databaseName.equals("plataforma")) {
                 result.add((E) new Plataforma(Integer.parseInt(objeto.get("id").toString()), objeto.get("nombre").toString(), objeto.get("descripcion").toString(), objeto.get("imagen").toString(), objeto.get("empresa").toString()));
             } else if (databaseName.equals("compania")) {
                 result.add((E) new Compania(Integer.parseInt(objeto.get("id").toString()), objeto.get("nombre").toString(), objeto.get("descripcion").toString(), objeto.get("imagen").toString()));
-             } else if (databaseName.equals("categoria")) {
+            } else if (databaseName.equals("categoria")) {
                 result.add((E) new Categoria(Integer.parseInt(objeto.get("id").toString()), objeto.get("nombre").toString(), objeto.get("imagen").toString(), objeto.get("descripcion").toString()));
             }
 
@@ -77,18 +77,18 @@ public class BDNoSQL<E> {
         return result;
     }
 
-    public void updateInDatabase(E objeto, String databaseName){
+    public void updateInDatabase(E objeto, String databaseName) {
         DBCollection collection = database.getCollection(databaseName);
-        DBObject query = new BasicDBObject("id",  objeto.toString().split("; ")[0]);
+        DBObject query = new BasicDBObject("id", objeto.toString().split("; ")[0]);
         DBObject objetoDB = toDBObject(objeto);
         collection.update(query, objetoDB);
 
     }
 
 
-    public void deleteFromDatabase(E objeto, String databaseName){
+    public void deleteFromDatabase(E objeto, String databaseName) {
         DBCollection collection = database.getCollection(databaseName);
-        DBObject query = new BasicDBObject("id",  objeto.toString().split("; ")[0]);
+        DBObject query = new BasicDBObject("id", objeto.toString().split("; ")[0]);
         collection.remove(query);
     }
 }
